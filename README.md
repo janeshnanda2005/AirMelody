@@ -36,21 +36,24 @@ git clone https://github.com/janeshnanda2005/AirMelody.git
 cd AirMelody
 
 ### 2. Install Dependencies
-
+- **Flask**
+- **python3.x**
+- **requests**
 
 ### 3. Run the Application
 
+Run the application by using 
+- **Flask run**
 
 ### 4. Access the Web App
 
-Open your browser and navigate to:
-Your local host
+- **Open your browser and navigate to:**
+- **Your local host**
+
 ### 5. Generate Music
 
-Select your favorite genre and click **Generate Music** to listen to AI-created tracks.
+**Select your favorite genre and click **Generate Music** to listen to AI-created tracks.**
 
-
----
 
 ## 🤝 Contribution
 
