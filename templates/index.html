@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AirMelody</title>
+  <style>
+    /* Basic resets and styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #eee;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 0;
+    }
+
+    /* Bubbles container full screen behind */
+    .bubbles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* clicks go through */
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    /* Each bubble */
+    .bubbles span {
+      position: absolute;
+      bottom: -150px;
+      width: 30px;
+      height: 30px;
+      background: rgba(59, 130, 246, 0.2); /* semi-transparent blue */
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      left: calc(10% * var(--i));
+      animation-duration: calc(15s + var(--i) * 1s);
+      filter: blur(1.5px);
+      opacity: 0.7;
+    }
+
+    /* Floating animation */
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-110vh) scale(0.8);
+        opacity: 0;
+      }
+    }
+
+    /* Main container styles */
+    .container {
+      max-width: 480px;
+      width: 100%;
+      background: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #3b82f6aa;
+      padding: 30px 25px;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 1; /* above bubbles */
+    }
+
+    h1 {
+      margin-bottom: 24px;
+      font-weight: 700;
+      text-align: center;
+      color: #3b82f6;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #a5b4fc;
+    }
+
+    select,
+    button {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    select {
+      background: #2c2c2c;
+      color: #eee;
+      outline: none;
+    }
+
+    select:focus {
+      box-shadow: 0 0 6px #3b82f6;
+    }
+
+    button {
+      background: #3b82f6;
+      color: white;
+    }
+
+    button:disabled {
+      background: #718096;
+      cursor: not-allowed;
+    }
+
+    .message {
+      text-align: center;
+      margin-bottom: 18px;
+      font-weight: 600;
+      color: #60a5fa;
+      min-height: 24px;
+    }
+
+    .audio-player {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .loader {
+      border: 4px solid #3b82f6;
+      border-top: 4px solid transparent;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px auto;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bubbles">
+    <span style="--i:11;"></span>
+    <span style="--i:15;"></span>
+    <span style="--i:20;"></span>
+    <span style="--i:12;"></span>
+    <span style="--i:18;"></span>
+    <span style="--i:16;"></span>
+    <span style="--i:25;"></span>
+    <span style="--i:10;"></span>
+    <span style="--i:14;"></span>
+  </div>
+
+  <div class="container">
+    <h1>AirMelody</h1>
+    <form id="musicForm" method="POST" action="/generate">
+      <label for="genre">Select Genre</label>
+      <select name="genre" id="genre" required>
+        {% for g in genres %}
+        <option value="{{ g }}" {% if selected_genre == g %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" id="generateBtn">Generate Music</button>
+    </form>
+
+    <div class="loader" id="loader"></div>
+    <div class="message" id="message">
+      {% if message %}
+        {{ message }}
+      {% endif %}
+    </div>
+
+    {% if audio_url %}
+    <div class="audio-player">
+      <audio controls src="{{ audio_url }}"></audio>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    const form = document.getElementById('musicForm');
+    const btn = document.getElementById('generateBtn');
+    const loader = document.getElementById('loader');
+    const messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', () => {
+      btn.disabled = true;
+      loader.style.display = 'block';
+      messageDiv.textContent = 'Generating music... Please wait.';
+    });
+
+    window.addEventListener('load', () => {
+      btn.disabled = false;
+      loader.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
