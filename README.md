@@ -32,8 +32,8 @@ These innovations are reshaping music production, gaming, advertising, and conte
 
 ### 1. Clone the Repository
 
--git clone https://github.com/janeshnanda2005/AirMelody.git
--cd AirMelody
+git clone https://github.com/janeshnanda2005/AirMelody.git
+cd AirMelody
 
 ### 2. Install Dependencies
 
