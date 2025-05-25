@@ -53,11 +53,11 @@ def generate_music():
     if response.status_code == 200:
         data = response.json()
 
-        # Extract music file path from response
+    
         music_url = data.get('music_file_path') or data.get('audio_url') or data.get('url')
 
         if music_url:
-            # Save locally with a safe filename
+    
             filename = f"{data.get('title', 'music').replace(' ', '_')}.mp3"
             success = download_music_file(music_url, filename)
             if success:
